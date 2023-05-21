@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/forum_alura?createDatabaseIfNotExist=true&serverTimezone=UTC
+    username: admin_forum
+    password: 12345678
