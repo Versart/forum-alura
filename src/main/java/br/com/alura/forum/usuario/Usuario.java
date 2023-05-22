@@ -1,4 +1,4 @@
-package br.com.alura.forum.model;
+package br.com.alura.forum.usuario;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,4 +21,10 @@ public class Usuario {
     private String email;
 
     private String senha;
+
+    public Usuario(UsuarioRequest usuarioRequest){
+        this.email = usuarioRequest.email();
+        this.nome = usuarioRequest.nome();
+        this.senha = usuarioRequest.senha();
+    }
 }

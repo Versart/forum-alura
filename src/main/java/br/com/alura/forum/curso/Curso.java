@@ -1,4 +1,4 @@
-package br.com.alura.forum.model;
+package br.com.alura.forum.curso;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,5 +19,10 @@ public class Curso {
     private String nome;
 
     private String categoria;
+
+    public Curso (CursoRequest cursoRequest){
+        this.nome = cursoRequest.nome();
+        this.categoria = cursoRequest.categoria();
+    }
     
 }

@@ -1,5 +1,7 @@
 package br.com.alura.forum.model;
 
+import br.com.alura.forum.curso.Curso;
+import br.com.alura.forum.usuario.Usuario;
 import jakarta.persistence.*;
 import lombok.*;
 
