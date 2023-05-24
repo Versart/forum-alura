@@ -1,5 +1,6 @@
 package br.com.alura.forum.controller;
 
+import br.com.alura.forum.infra.security.DadosTokenJWT;
 import br.com.alura.forum.infra.security.TokenService;
 import br.com.alura.forum.usuario.AutenticacaoService;
 import br.com.alura.forum.usuario.DadosAutenticacao;
@@ -25,8 +26,9 @@ public class AutenticacaoController {
 
     @PostMapping
     public ResponseEntity login(@Valid @RequestBody DadosAutenticacao dadosAutenticacao) {
-        var token = new UsernamePasswordAuthenticationToken(dadosAutenticacao.email(),dadosAutenticacao.senha());
-        var authentication = authenticationManager.authenticate(token);
-        return ResponseEntity.ok(tokenService.gerarToken((Usuario) authentication.getPrincipal()));
+        var authenticationToken = new UsernamePasswordAuthenticationToken(dadosAutenticacao.email(),dadosAutenticacao.senha());
+        var authentication = authenticationManager.authenticate(authenticationToken);
+        var tokenJWT = tokenService.gerarToken((Usuario) authentication.getPrincipal());
+        return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
     }
 }

@@ -3,3 +3,5 @@ spring:
     url: jdbc:mysql://localhost:3306/forum_alura?createDatabaseIfNotExist=true&serverTimezone=UTC
     username: admin_forum
     password: 12345678
+
+api:security:token:secret: ${JWT_SECRET:12345678}
