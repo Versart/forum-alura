@@ -1,6 +1,7 @@
 package br.com.alura.forum.model;
 
 import br.com.alura.forum.curso.Curso;
+import br.com.alura.forum.topico.TopicoRequest;
 import br.com.alura.forum.usuario.Usuario;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,9 +30,16 @@ public class Topico {
 
     private StatusTopico statusTopico = StatusTopico.NAO_RESPONDIDO;
     @ManyToOne
+    @JoinColumn(name = "usuario_id")
     private Usuario autor;
     @ManyToOne
+    @JoinColumn(name = "curso_id")
     private Curso curso;
     @OneToMany(mappedBy = "topico")
     private List<Resposta> respostas = new ArrayList<>();
+
+    public Topico(TopicoRequest topicoRequest) {
+        this.titulo = topicoRequest.titulo();
+        this.mensagem = topicoRequest.mensagem();
+    }
 }

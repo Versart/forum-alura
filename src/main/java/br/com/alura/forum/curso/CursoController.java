@@ -16,7 +16,9 @@ public class CursoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<CursoResponse> saveCurso(@Valid @RequestBody CursoRequest cursoRequest) {
+    public ResponseEntity<CursoResponse> saveCurso(@Valid @RequestBody CursoRequest cursoRequest,
+                                                   RequestMapping requestAttribute) {
+        requestAttribute.headers();
         return ResponseEntity.ok(cursoService.saveCurso(cursoRequest));
     }
 
