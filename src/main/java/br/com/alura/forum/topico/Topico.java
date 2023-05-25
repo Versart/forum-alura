@@ -1,6 +1,8 @@
-package br.com.alura.forum.model;
+package br.com.alura.forum.topico;
 
 import br.com.alura.forum.curso.Curso;
+import br.com.alura.forum.model.Resposta;
+import br.com.alura.forum.model.StatusTopico;
 import br.com.alura.forum.topico.TopicoRequest;
 import br.com.alura.forum.usuario.Usuario;
 import jakarta.persistence.*;
@@ -28,6 +30,7 @@ public class Topico {
 
     private LocalDateTime dataCriacao = LocalDateTime.now();
 
+    @Enumerated(EnumType.STRING)
     private StatusTopico statusTopico = StatusTopico.NAO_RESPONDIDO;
     @ManyToOne
     @JoinColumn(name = "usuario_id")

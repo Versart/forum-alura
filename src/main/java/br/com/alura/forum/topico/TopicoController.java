@@ -1,13 +1,11 @@
-package br.com.alura.forum.controller;
+package br.com.alura.forum.topico;
 
-import br.com.alura.forum.topico.TopicoRequest;
-import br.com.alura.forum.topico.TopicoResponse;
-import br.com.alura.forum.topico.TopicoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,9 +21,7 @@ public class TopicoController {
     }
 
     @GetMapping
-    public String dados(
-            @RequestHeader(name = "Authorization") String token
-    ) {
-        return token;
+    public ResponseEntity<Page<TopicoResponse>> getTopicos(Pageable pageable) {
+        return ResponseEntity.ok(topicoService.getTopicos(pageable));
     }
 }

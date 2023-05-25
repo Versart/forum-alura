@@ -4,11 +4,12 @@ package br.com.alura.forum.topico;
 import br.com.alura.forum.curso.Curso;
 import br.com.alura.forum.curso.CursoRepository;
 import br.com.alura.forum.infra.security.TokenService;
-import br.com.alura.forum.model.Topico;
 import br.com.alura.forum.repository.TopicoRepository;
 import br.com.alura.forum.usuario.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -33,5 +34,11 @@ public class TopicoService {
         topico.setAutor(usuario);
         topico = topicoRepository.save(topico);
         return new TopicoResponse(topico);
+    }
+
+    public Page<TopicoResponse> getTopicos(Pageable pageable) {
+        Page<TopicoResponse> map = topicoRepository.findAll(pageable).map(TopicoResponse::new);
+        System.out.println(map);
+        return map;
     }
 }
