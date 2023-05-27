@@ -45,4 +45,11 @@ public class Topico {
         this.titulo = topicoRequest.titulo();
         this.mensagem = topicoRequest.mensagem();
     }
+
+    public void alterar(AlteredTopic alteredTopic){
+        if(alteredTopic.mensagem() != null && !alteredTopic.mensagem().trim().equals(""))
+            this.mensagem = alteredTopic.mensagem();
+        if(alteredTopic.titulo() != null && !alteredTopic.titulo().trim().equals(""))
+            this.titulo = alteredTopic.titulo();
+    }
 }

@@ -9,7 +9,7 @@ public record TopicoRequest(
         String titulo,
         @NotNull
         @NotBlank
-        String mensagem, String autor,
+        String mensagem,
         @NotNull
         @NotBlank
         String curso) {

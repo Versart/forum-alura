@@ -1,5 +1,6 @@
 package br.com.alura.forum.exceptionhandler;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import java.time.OffsetDateTime;
@@ -12,6 +13,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Problema {
 
     private String messagem;

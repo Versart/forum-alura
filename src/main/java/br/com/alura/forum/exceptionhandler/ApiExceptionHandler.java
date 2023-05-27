@@ -1,9 +1,11 @@
 package br.com.alura.forum.exceptionhandler;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -25,5 +27,38 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         List<Campo> camposInvalidos = ex.getFieldErrors().stream().map(Campo::new).collect(Collectors.toList());
         problema.setCampoList(camposInvalidos);
         return handleExceptionInternal(ex, problema, headers, status, request);
+    }
+
+    @ExceptionHandler(EntityNotFound.class)
+    public ResponseEntity<Object> handleEntityNotFound(EntityNotFound ex, WebRequest web) {
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        Problema problema = Problema.builder()
+                .messagem(ex.getMessage())
+                .dateTime(OffsetDateTime.now())
+                .statusCode(httpStatus.value())
+                .build();
+        return handleExceptionInternal(ex, problema, new HttpHeaders(), httpStatus, web);
+    }
+
+    @ExceptionHandler(AttributeNotFound.class)
+    public ResponseEntity<Object> handleEntityNotFound(AttributeNotFound ex, WebRequest web) {
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        Problema problema = Problema.builder()
+                .messagem(ex.getMessage())
+                .dateTime(OffsetDateTime.now())
+                .statusCode(httpStatus.value())
+                .build();
+        return handleExceptionInternal(ex, problema, new HttpHeaders(), httpStatus, web);
+    }
+
+    @ExceptionHandler(NotAutorized.class)
+    public ResponseEntity<Object> handleNotAutorized(NotAutorized ex, WebRequest web) {
+        HttpStatus httpStatus = HttpStatus.FORBIDDEN;
+        Problema problema = Problema.builder()
+                .messagem(ex.getMessage())
+                .dateTime(OffsetDateTime.now())
+                .statusCode(httpStatus.value())
+                .build();
+        return handleExceptionInternal(ex, problema, new HttpHeaders(), httpStatus, web);
     }
 }
