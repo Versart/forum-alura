@@ -1,5 +1,6 @@
 package br.com.alura.forum.topico;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/topicos")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearer-key")
 public class TopicoController {
 
     private final TopicoService topicoService;
