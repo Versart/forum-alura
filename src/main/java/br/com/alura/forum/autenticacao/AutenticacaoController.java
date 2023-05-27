@@ -1,8 +1,7 @@
-package br.com.alura.forum.controller;
+package br.com.alura.forum.autenticacao;
 
 import br.com.alura.forum.infra.security.DadosTokenJWT;
 import br.com.alura.forum.infra.security.TokenService;
-import br.com.alura.forum.usuario.AutenticacaoService;
 import br.com.alura.forum.usuario.DadosAutenticacao;
 import br.com.alura.forum.usuario.Usuario;
 import jakarta.validation.Valid;

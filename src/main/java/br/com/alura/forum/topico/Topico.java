@@ -1,9 +1,7 @@
 package br.com.alura.forum.topico;
 
 import br.com.alura.forum.curso.Curso;
-import br.com.alura.forum.model.Resposta;
-import br.com.alura.forum.model.StatusTopico;
-import br.com.alura.forum.topico.TopicoRequest;
+import br.com.alura.forum.resposta.Resposta;
 import br.com.alura.forum.usuario.Usuario;
 import jakarta.persistence.*;
 import lombok.*;

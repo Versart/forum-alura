@@ -7,14 +7,12 @@ import br.com.alura.forum.exceptionhandler.AttributeNotFound;
 import br.com.alura.forum.exceptionhandler.EntityNotFound;
 import br.com.alura.forum.exceptionhandler.NotAutorized;
 import br.com.alura.forum.infra.security.TokenService;
-import br.com.alura.forum.repository.TopicoRepository;
 import br.com.alura.forum.usuario.Usuario;
 import br.com.alura.forum.usuario.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
