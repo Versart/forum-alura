@@ -52,18 +52,18 @@ public class TopicoService {
     }
 
 
-    public TopicoResponse updateTopicoById(Long id, AlteredTopic alteredTopict) {
+    public TopicoResponse updateTopicoById(Long id, AlteredTopic alteredTopic) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         Usuario usuario = usuarioRepository.findByEmail(email);
 
         return topicoRepository.findById(id).map(topico -> {
                     if (topico.getAutor().equals(usuario)) {
-                        if (alteredTopict.curso() != null) {
-                            Curso curso = cursoRepository.findCursoByNome(alteredTopict.curso())
+                        if (alteredTopic.curso() != null) {
+                            Curso curso = cursoRepository.findCursoByNome(alteredTopic.curso())
                                     .orElseThrow(() -> new AttributeNotFound("Curso não encontrado"));
                             topico.setCurso(curso);
                         }
-                        topico.alterar(alteredTopict);
+                        topico.alterar(alteredTopic);
                         return new TopicoResponse(topico);
                     }
                     throw new NotAutorized("Acesso não autorizado!");

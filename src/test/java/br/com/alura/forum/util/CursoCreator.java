@@ -8,7 +8,7 @@ public class CursoCreator {
     public static Curso createCourseToBeSaved() {
         
         return Curso.builder()
-            .nome("Aprenda Java")
+            .nome("Java")
             .categoria("Linguagem de Programação")
             .build();
     }
