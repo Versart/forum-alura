@@ -20,6 +20,15 @@ public class UsuarioCreator {
             .build();
     }
 
+    public static Usuario createValidUser() {
+        return Usuario.builder()
+            .id(1l)
+            .email(email)
+            .nome(nome)
+            .senha(new BCryptPasswordEncoder().encode(senha))
+            .build();
+    }
+
     public static UsuarioRequest createUserRequest() {
         return UsuarioRequest.builder()
             .email(email)

@@ -47,7 +47,7 @@ public class TopicoService {
 
     public TopicoResponse getTopicoById(Long id) {
         return topicoRepository.findById(id).map(TopicoResponse::new).orElseThrow(
-                () -> new EntityNotFound("Tópico não encontrado!")
+                () -> new EntityNotFound("Tópico not found!")
         );
     }
 
@@ -60,26 +60,26 @@ public class TopicoService {
                     if (topico.getAutor().equals(usuario)) {
                         if (alteredTopic.curso() != null) {
                             Curso curso = cursoRepository.findCursoByNome(alteredTopic.curso())
-                                    .orElseThrow(() -> new AttributeNotFound("Curso não encontrado"));
+                                    .orElseThrow(() -> new AttributeNotFound("Curso not found"));
                             topico.setCurso(curso);
                         }
                         topico.alterar(alteredTopic);
                         return new TopicoResponse(topico);
                     }
-                    throw new NotAutorized("Acesso não autorizado!");
+                    throw new NotAutorized("Unauthorized access!");
                 }
-        ).orElseThrow(() -> new EntityNotFound("Tópico não encontrado!"));
+        ).orElseThrow(() -> new EntityNotFound("Tópico not found!"));
 
     }
 
     public void deleteById(Long id) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         Usuario usuario = usuarioRepository.findByEmail(email);
-        Topico topico = topicoRepository.findById(id).orElseThrow(() -> new EntityNotFound("Tópico não encontrado!"));
+        Topico topico = topicoRepository.findById(id).orElseThrow(() -> new EntityNotFound("Tópico not found!"));
         if (topico.getAutor() == usuario) {
             topicoRepository.deleteById(id);
         } else
-            throw new NotAutorized("Acesso não autorizado!");
+            throw new NotAutorized("Unauthorized access!");
 
     }
 }

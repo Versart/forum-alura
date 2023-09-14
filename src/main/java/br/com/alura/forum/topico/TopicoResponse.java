@@ -1,5 +1,8 @@
 package br.com.alura.forum.topico;
 
+import lombok.Builder;
+
+@Builder
 public record TopicoResponse(Long id, String titulo, String status,String autor, String curso) {
 
     public TopicoResponse(Topico topico){

@@ -31,7 +31,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(EntityNotFound.class)
     public ResponseEntity<Object> handleEntityNotFound(EntityNotFound ex, WebRequest web) {
-        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        HttpStatus httpStatus = HttpStatus.NOT_FOUND;
         Problema problema = Problema.builder()
                 .messagem(ex.getMessage())
                 .dateTime(OffsetDateTime.now())

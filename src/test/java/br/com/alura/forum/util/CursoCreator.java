@@ -12,4 +12,12 @@ public class CursoCreator {
             .categoria("Linguagem de Programação")
             .build();
     }
+
+    public static Curso createValidCourse() {
+         return Curso.builder()
+            .id(1l)
+            .nome("Java")
+            .categoria("Linguagem de Programação")
+            .build();
+    }
 }

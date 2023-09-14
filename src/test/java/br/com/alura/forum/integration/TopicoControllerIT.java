@@ -170,6 +170,28 @@ public class TopicoControllerIT {
     }
 
     @Test
+    @DisplayName("getTopicoById throws not found when topic not found")
+    void getTopicoById_ThrowsNotFound_WhenTopicNotFound() {
+        DadosAutenticacao autenticacao = AutenticacaoCreator.createDadosAutenticacao();
+        DadosTokenJWT dadosTokenJWT = testRestTemplate.postForObject("/login", autenticacao, DadosTokenJWT.class);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Authorization", "Bearer " + dadosTokenJWT.tokenJWT());
+        
+        Long idNotExist = 1l;
+
+        ResponseEntity<Object> exchange = testRestTemplate.exchange("/topicos/{id}"
+        , HttpMethod.GET, new HttpEntity<>(null,httpHeaders), new ParameterizedTypeReference<>(){
+
+        },idNotExist);
+
+        Assertions.assertThat(exchange).isNotNull();
+        Assertions.assertThat(exchange.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        Assertions.assertThat(exchange.getBody()).isNotNull();
+        Assertions.assertThat(exchange.getBody().toString()).contains("not found");
+
+    }
+
+    @Test
     @DisplayName("updateTopicById returns altered topicResponse when successful")
     void updateTopicoById_ReturnsAlteredTopicResponse_WhenSuccessful() {
         DadosAutenticacao autenticacao = AutenticacaoCreator.createDadosAutenticacao();
@@ -196,6 +218,27 @@ public class TopicoControllerIT {
 
 
     }
+    
+    @Test
+    @DisplayName("updateTopicoById throws not found when topic not found")
+    void updateTopicoById_ThrowsNotFound_WhenTopicNotFound() {
+        DadosAutenticacao autenticacao = AutenticacaoCreator.createDadosAutenticacao();
+        DadosTokenJWT dadosTokenJWT = testRestTemplate.postForObject("/login", autenticacao, DadosTokenJWT.class);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Authorization", "Bearer " + dadosTokenJWT.tokenJWT());
+
+        Long idNotExist = 1l;
+        AlteredTopic alteredTopic = TopicoCreator.createTopicRequestAltered();
+
+        ResponseEntity<Object> exchange = testRestTemplate.exchange("/topicos/{id}"
+        , HttpMethod.PUT, new HttpEntity<>(alteredTopic,httpHeaders), new ParameterizedTypeReference<>() {
+        }, idNotExist);
+
+        Assertions.assertThat(exchange).isNotNull();
+        Assertions.assertThat(exchange.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        Assertions.assertThat(exchange.getBody()).isNotNull();
+        Assertions.assertThat(exchange.getBody().toString()).contains("not found");
+    }
 
     @Test
     @DisplayName("deleteById removes topic when successful")
@@ -219,6 +262,27 @@ public class TopicoControllerIT {
 
         Assertions.assertThat(exchange).isNotNull();
         Assertions.assertThat(exchange.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+    }
+
+    @Test
+    @DisplayName("deleteById throws not found when topic not found")
+    void deleteById_ThrowsNotFound_WhenTopicNotFound() {
+        DadosAutenticacao autenticacao = AutenticacaoCreator.createDadosAutenticacao();
+        DadosTokenJWT dadosTokenJWT = testRestTemplate.postForObject("/login", autenticacao, DadosTokenJWT.class);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Authorization", "Bearer " + dadosTokenJWT.tokenJWT());
+
+        Long idNotExist = 1l;
+        
+        ResponseEntity<Object> exchange = testRestTemplate.exchange("/topicos/{id}", 
+        HttpMethod.DELETE, new HttpEntity<>(null,httpHeaders), new ParameterizedTypeReference<>() {
+            
+        }, idNotExist);
+
+        Assertions.assertThat(exchange).isNotNull();
+        Assertions.assertThat(exchange.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        Assertions.assertThat(exchange.getBody()).isNotNull();
+        Assertions.assertThat(exchange.getBody().toString()).contains("not found");
     }
 
     @BeforeEach
