@@ -76,7 +76,7 @@ public class TopicoService {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         Usuario usuario = usuarioRepository.findByEmail(email);
         Topico topico = topicoRepository.findById(id).orElseThrow(() -> new EntityNotFound("Tópico not found!"));
-        if (topico.getAutor() == usuario) {
+        if (topico.getAutor().equals(usuario)) {
             topicoRepository.deleteById(id);
         } else
             throw new NotAutorized("Unauthorized access!");
