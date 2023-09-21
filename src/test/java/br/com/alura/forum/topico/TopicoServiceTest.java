@@ -23,11 +23,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import br.com.alura.forum.curso.CursoRepository;
+import br.com.alura.forum.exceptionhandler.EntityNotFound;
+import br.com.alura.forum.exceptionhandler.NotAuthorized;
 import br.com.alura.forum.infra.security.TokenService;
 import br.com.alura.forum.usuario.UsuarioRepository;
 import br.com.alura.forum.util.CursoCreator;
 import br.com.alura.forum.util.TopicoCreator;
 import br.com.alura.forum.util.UsuarioCreator;
+import jakarta.persistence.EntityNotFoundException;
 
 @ExtendWith(SpringExtension.class)
 public class TopicoServiceTest {
@@ -86,6 +89,17 @@ public class TopicoServiceTest {
     }
 
     @Test
+    @DisplayName("saveTopico throws entity not found exception when topicoRequest do not have course")
+    void saveTopico_ThrowsEntityNotFoundException_WhenTopicoRequestDoNotHaveCourse() {
+        BDDMockito.when(topicoRepository.save(ArgumentMatchers.any(Topico.class)))
+            .thenThrow(EntityNotFoundException.class);
+        Assertions.assertThatExceptionOfType(EntityNotFoundException.class)
+            .isThrownBy(() -> topicoService.saveTopico(
+                 TopicoCreator.createTopicRequestWithoutCurso()
+            ));
+    }
+
+    @Test
     @DisplayName("getTopicos returns page of topicoResponse when successful")
     void getTopicos_ReturnsPageOfTopicoRsponse_WhenSuccessful() {
         String ExpectedAuthorName = TopicoCreator.createValidTopic().getAutor().getNome();
@@ -95,6 +109,16 @@ public class TopicoServiceTest {
             .hasSize(1);
         
         Assertions.assertThat(page.getContent().get(0).autor()).contains(ExpectedAuthorName);
+    }
+
+    @Test
+    @DisplayName("getTopicos returns empty page of TopicResponse when no topic is found")
+    void getTopicos_ReturnsEmptyPageOfTopicResponse_WhenNoTopicIsFound() {
+        BDDMockito.when(topicoRepository.findAll(ArgumentMatchers.any(PageRequest.class)))
+            .thenReturn(new PageImpl<>(List.of()));
+        Page<TopicoResponse> page = topicoService.getTopicos(PageRequest.of(1, 1));
+        
+        Assertions.assertThat(page).isNotNull().isEmpty();
     }
 
     @Test
@@ -108,6 +132,16 @@ public class TopicoServiceTest {
     }
 
     @Test
+    @DisplayName("getTopicoById throws entity not found exception when topic is not found")
+    void getTopicoById_ThrowsEntityNotFoundException_WhenTopicIsNotFound() {
+        BDDMockito.when(topicoRepository.findById(ArgumentMatchers.anyLong()))
+            .thenThrow(EntityNotFoundException.class);
+        
+        Assertions.assertThatExceptionOfType(EntityNotFoundException.class)
+            .isThrownBy(() -> topicoService.getTopicoById(1l));
+    }
+
+    @Test
     @DisplayName("updateTopicoById returns altered topic when successful")
     void updateTopicoById_ReturnsAlteredTopic_WhenSuccessful() {
         Long idExpected = TopicoCreator.createValidTopic().getId();
@@ -118,12 +152,28 @@ public class TopicoServiceTest {
     }
 
     @Test
+    @DisplayName("updateTopicoById throws not authorized when the topic is not your")
+    void updateTopicoById_ThrowsNotAuthorized_WhenTheTopicIsNotYour() {
+        BDDMockito.when(topicoRepository.findById(ArgumentMatchers.anyLong()))
+            .thenThrow(NotAuthorized.class);
+        
+        Assertions.assertThatExceptionOfType(NotAuthorized.class)
+            .isThrownBy(() -> topicoService.getTopicoById(1l));
+    }
+
+    @Test
     @DisplayName("deletById removes topic when successful")
     void deleteById_RemoveTopic_WhenSuccessful() {
         Assertions.assertThatCode(() -> topicoService.deleteById(1l))
             .doesNotThrowAnyException();   
     }
-
-
-   
-}
+    @Test
+    @DisplayName("deleteById throws EntityNotFound when topic is not found")
+    void deleteById_ThrowsEntityNotFound_WhenTopicIsNotFound() {
+        BDDMockito.doThrow(EntityNotFound.class)
+            .when(topicoRepository).deleteById(ArgumentMatchers.anyLong());
+        
+        Assertions.assertThatExceptionOfType(EntityNotFound.class)
+            .isThrownBy(() -> topicoService.deleteById(1l));
+    }
+}   

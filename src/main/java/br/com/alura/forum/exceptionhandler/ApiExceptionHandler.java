@@ -51,8 +51,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, problema, new HttpHeaders(), httpStatus, web);
     }
 
-    @ExceptionHandler(NotAutorized.class)
-    public ResponseEntity<Object> handleNotAutorized(NotAutorized ex, WebRequest web) {
+    @ExceptionHandler(NotAuthorized.class)
+    public ResponseEntity<Object> handleNotAutorized(NotAuthorized ex, WebRequest web) {
         HttpStatus httpStatus = HttpStatus.FORBIDDEN;
         Problema problema = Problema.builder()
                 .messagem(ex.getMessage())

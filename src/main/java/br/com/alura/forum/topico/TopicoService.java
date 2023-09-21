@@ -5,10 +5,11 @@ import br.com.alura.forum.curso.Curso;
 import br.com.alura.forum.curso.CursoRepository;
 import br.com.alura.forum.exceptionhandler.AttributeNotFound;
 import br.com.alura.forum.exceptionhandler.EntityNotFound;
-import br.com.alura.forum.exceptionhandler.NotAutorized;
+import br.com.alura.forum.exceptionhandler.NotAuthorized;
 import br.com.alura.forum.infra.security.TokenService;
 import br.com.alura.forum.usuario.Usuario;
 import br.com.alura.forum.usuario.UsuarioRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -33,7 +34,8 @@ public class TopicoService {
     public TopicoResponse saveTopico(TopicoRequest topicoRequest) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         Usuario usuario = usuarioRepository.findByEmail(email);
-        Curso curso = cursoRepository.findCursoByNome(topicoRequest.curso()).orElseThrow();
+        Curso curso = cursoRepository.findCursoByNome(topicoRequest.curso())
+            .orElseThrow(() -> new EntityNotFoundException());
         Topico topico = new Topico(topicoRequest);
         topico.setCurso(curso);
         topico.setAutor(usuario);
@@ -66,10 +68,9 @@ public class TopicoService {
                         topico.alterar(alteredTopic);
                         return new TopicoResponse(topico);
                     }
-                    throw new NotAutorized("Unauthorized access!");
+                    throw new NotAuthorized("Unauthorized access!");
                 }
         ).orElseThrow(() -> new EntityNotFound("Tópico not found!"));
-
     }
 
     public void deleteById(Long id) {
@@ -79,7 +80,7 @@ public class TopicoService {
         if (topico.getAutor().equals(usuario)) {
             topicoRepository.deleteById(id);
         } else
-            throw new NotAutorized("Unauthorized access!");
+            throw new NotAuthorized("Unauthorized access!");
 
     }
 }

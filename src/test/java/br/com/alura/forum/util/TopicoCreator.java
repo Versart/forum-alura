@@ -48,6 +48,14 @@ public class TopicoCreator {
             .build();
     }
 
+    public static TopicoRequest createTopicRequestWithoutCurso() {
+        return TopicoRequest.builder()
+            .curso(null)
+            .mensagem("Como criar pacotes")
+            .titulo("criar pacote java")
+            .build();
+    }
+
     public static AlteredTopic createTopicRequestAltered() {
         return AlteredTopic.builder()
             .curso("Java")
