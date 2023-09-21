@@ -53,7 +53,7 @@ public class TopicoService {
         );
     }
 
-
+    @Transactional
     public TopicoResponse updateTopicoById(Long id, AlteredTopic alteredTopic) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         Usuario usuario = usuarioRepository.findByEmail(email);
