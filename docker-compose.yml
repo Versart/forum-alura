@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  db:
+    image: mysql
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: admin_forum
+      MYSQL_PASSWORD: 12345678
+      MYSQL_DATABASE: forum_alura
+    ports:
+      - "3306:3306"
+    volumes:
+      - forum_alura:/var/lib/mysql
+  db_test:
+    image: mysql
+    container_name: mysql_test
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: admin_forum_test
+      MYSQL_PASSWORD: 12345678
+      MYSQL_DATABASE: forum_alura_test
+    ports:
+      - "3307:3306"
+    volumes:
+      - forum_alura_test:/var/lib/mysql
+volumes:
+  forum_alura:
+  forum_alura_test:
